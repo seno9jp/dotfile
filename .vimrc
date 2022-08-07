@@ -33,6 +33,22 @@ set fileencodings=utf-8
 set fileformats=unix,dos,mac
 lang en_US.UTF-8
 
+" カッコの自動補完
+inoremap { {}<LEFT>
+inoremap [ []<LEFT>
+inoremap ( ()<LEFT>
+inoremap " ""<LEFT>
+inoremap ' ''<LEFT>
+
+" カーソルの位置の記憶
+augroup vimrcEx
+  autocmd!
+  autocmd BufReadPost *
+    \ if line("'\"") > 1 && line("'\"") <= line('$') |
+    \   exe "normal! g`\"" |
+    \ endif
+augroup END
+
 "-------------------------
 " keymap
 "-------------------------
@@ -77,6 +93,14 @@ let &t_te.="\e[0 q"
 
 call plug#begin('~/.vim/plugged')
   Plug 'rust-lang/rust.vim'
+  
+  " Language Servers for vim-lsp.
+  " 対応したいファイルをvimで開いて"LspInstallServer をコマンドするだけ
+  Plug 'prabirshrestha/vim-lsp'
+  Plug 'mattn/vim-lsp-settings'
+  Plug 'prabirshrestha/asyncomplete.vim'
+  Plug 'prabirshrestha/asyncomplete-lsp.vim'
+
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
   Plug 'itchyny/lightline.vim'
   Plug 'morhetz/gruvbox'
