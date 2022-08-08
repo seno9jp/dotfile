@@ -16,6 +16,7 @@ set clipboard=unnamed  "yank した文字列をクリップボードにコピー
 set smartindent        "改行入力行の末尾にあわせてインデントを増減する
 set pumheight=10       "補完メニューの高さ
 set mouse=a            "mouseスクロールONに
+set ttymouse=xterm2    "mouseスクロールONに
 
 
 "検索設定
