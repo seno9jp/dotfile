@@ -4,8 +4,8 @@
 
 set number             "行番号を表示
 set autoindent         "改行時に自動でインデントする
-set tabstop=2          "タブを何文字の空白に変換するか
-set shiftwidth=2       "自動インデント時に入力する空白の数
+set tabstop=4          "タブを何文字の空白に変換するか
+set shiftwidth=4       "自動インデント時に入力する空白の数
 set expandtab          "タブ入力を空白に変換
 set whichwrap=b,s,h,l,<,>,[,],~ "行頭、行末で行のカーソル移動を可能にする
 set backspace=indent,eol,start "バックスペースでの行移動を可能にする
@@ -94,35 +94,53 @@ let &t_te.="\e[0 q"
 
 call plug#begin('~/.vim/plugged')
   Plug 'rust-lang/rust.vim'
-  
+
   " Language Servers for vim-lsp.
   " 対応したいファイルをvimで開いて"LspInstallServer をコマンドするだけ
   Plug 'prabirshrestha/vim-lsp'
   Plug 'mattn/vim-lsp-settings'
   Plug 'prabirshrestha/asyncomplete.vim'
   Plug 'prabirshrestha/asyncomplete-lsp.vim'
-
+  
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
   Plug 'itchyny/lightline.vim'
   Plug 'morhetz/gruvbox'
   
-  Plug 'preservim/nerdtree'
+  Plug 'lambdalisue/fern.vim'
+  Plug 'lambdalisue/nerdfont.vim'
+  Plug 'lambdalisue/fern-renderer-nerdfont.vim'
+  Plug 'lambdalisue/glyph-palette.vim'
+  ""Plug 'preservim/nerdtree'
 call plug#end()
 
-"-------------------------
+"=========================
 " Plugin の設定
-"-------------------------
+"=========================
 
 set laststatus=2
 set noshowmode
 
 "カラースキームの設定
 colorscheme gruvbox
-let  g:gruvbox_contrast_dark = 'hard'
+let g:gruvbox_contrast_dark = 'hard'
 set background=dark
+"colorscheme monokai
 
 filetype plugin indent on
 
 " 保存時に自動でrustfmt
 let g:rustfmt_autosave = 1
 
+
+"-------------------------
+"fernの設定
+"-------------------------
+" Ctrl+nでファイルツリーを表示/非表示する
+nnoremap <C-n> :Fern . -reveal=% -drawer -toggle -width=40<CR>
+let g:fern#renderer = 'nerdfont'
+" アイコンに色をつける
+augroup my-glyph-palette
+  autocmd! *
+  autocmd FileType fern call glyph_palette#apply()
+  autocmd FileType nerdtree,startify call glyph_palette#apply()
+augroup END
