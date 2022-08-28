@@ -105,12 +105,9 @@ call plug#begin('~/.vim/plugged')
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
   Plug 'itchyny/lightline.vim'
   Plug 'morhetz/gruvbox'
-  
+
   Plug 'lambdalisue/fern.vim'
-  Plug 'lambdalisue/nerdfont.vim'
-  Plug 'lambdalisue/fern-renderer-nerdfont.vim'
-  Plug 'lambdalisue/glyph-palette.vim'
-  ""Plug 'preservim/nerdtree'
+  Plug 'yuki-yano/fern-preview.vim'
 call plug#end()
 
 "=========================
@@ -124,23 +121,30 @@ set noshowmode
 colorscheme gruvbox
 let g:gruvbox_contrast_dark = 'hard'
 set background=dark
-"colorscheme monokai
+
 
 filetype plugin indent on
 
 " 保存時に自動でrustfmt
 let g:rustfmt_autosave = 1
 
-
 "-------------------------
 "fernの設定
 "-------------------------
 " Ctrl+nでファイルツリーを表示/非表示する
 nnoremap <C-n> :Fern . -reveal=% -drawer -toggle -width=40<CR>
-let g:fern#renderer = 'nerdfont'
-" アイコンに色をつける
-augroup my-glyph-palette
-  autocmd! *
-  autocmd FileType fern call glyph_palette#apply()
-  autocmd FileType nerdtree,startify call glyph_palette#apply()
+
+" fern-preview.vim 公式リポジトリを参考にキーマップを追加
+" pでファイルプレビュー、Ctrl+pでカーソル合うだけで自動プレビュー
+function! s:fern_settings() abort
+  nmap <silent> <buffer> p     <Plug>(fern-action-preview:toggle)
+  nmap <silent> <buffer> <C-p> <Plug>(fern-action-preview:auto:toggle)
+  nmap <silent> <buffer> <C-d> <Plug>(fern-action-preview:scroll:down:half)
+  nmap <silent> <buffer> <C-u> <Plug>(fern-action-preview:scroll:up:half)
+endfunction
+
+augroup fern-settings
+  autocmd!
+  autocmd FileType fern call s:fern_settings()
 augroup END
+
